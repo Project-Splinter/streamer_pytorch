@@ -153,9 +153,9 @@ if __name__ == "__main__":
     if args.camera:
         data_stream = CaptureStreamer()
     elif len(args.videos) > 0:
-        data_stream = VideoListStreamer(args.videos * (1e6 if args.loop else 1))
+        data_stream = VideoListStreamer(args.videos * (100 if args.loop else 1))
     elif len(args.images) > 0:
-        data_stream = ImageListStreamer(args.images * (1e6 if args.loop else 1))
+        data_stream = ImageListStreamer(args.images * (100 if args.loop else 1))
 
     loader = torch.utils.data.DataLoader(
         data_stream, 
