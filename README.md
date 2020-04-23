@@ -12,6 +12,7 @@ pip install git+https://github.com/liruilong940607/streamer_pytorch --upgrade
 ```
 import tqdm
 import argparse
+import torch
 import streamer_pytorch as streamer
 
 parser = argparse.ArgumentParser(description='.')
