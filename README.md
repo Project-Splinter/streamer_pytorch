@@ -1,5 +1,7 @@
 # Pytorch Streamer
 
+Pytorch based data streamer. (Capture, Video & Image).
+
 ## Install
 
 ```
