@@ -11,6 +11,16 @@ pip install git+https://github.com/liruilong940607/streamer_pytorch --upgrade
 ## Usage
 
 ```
+# images
+python demo.py --images <IMAGE_PATH> <IMAGE_PATH> <IMAGE_PATH> --loop --vis
+# videos
+python demo.py --videos <VIDEO_PATH> <VIDEO_PATH> <VIDEO_PATH> --vis
+# capture device
+python demo.py --camera --vis
+```
+
+see also in `demo.py`
+```
 import tqdm
 import argparse
 import torch
@@ -27,6 +37,8 @@ parser.add_argument(
     '--videos', default="", nargs="*")
 parser.add_argument(
     '--loop', action="store_true")
+parser.add_argument(
+    '--vis', action="store_true")
 args = parser.parse_args()
 
 def visulization(data):
@@ -58,8 +70,8 @@ loader = torch.utils.data.DataLoader(
 
 try:
     for data in tqdm.tqdm(loader):
-        visulization(data)
-        pass
+        if args.vis:
+            visulization(data)
 except Exception as e:
     print (e)
     del data_stream
