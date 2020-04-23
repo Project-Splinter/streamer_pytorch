@@ -6,7 +6,6 @@ Pytorch based data streamer. (Capture, Video & Image).
 
 ```
 pip install git+https://github.com/liruilong940607/streamer_pytorch --upgrade
-
 ```
 
 ## Usage
