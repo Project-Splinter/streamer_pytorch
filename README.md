@@ -15,6 +15,7 @@ import tqdm
 import argparse
 import torch
 import numpy as np
+import cv2
 import streamer_pytorch as streamer
 
 parser = argparse.ArgumentParser(description='.')
