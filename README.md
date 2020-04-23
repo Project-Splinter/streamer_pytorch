@@ -65,5 +65,5 @@ except Exception as e:
 ## API
 
 - CaptureStreamer(id=0, width=512, height=512, pad=True)
-- VideoListStreamerfiles, width=512, height=512, pad=True)
+- VideoListStreamer(files, width=512, height=512, pad=True)
 - ImageListStreamer(files, width=512, height=512, pad=True)
