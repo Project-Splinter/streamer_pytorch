@@ -3,7 +3,7 @@
 ## Install
 
 ```
-pip install git+https://github.com/liruilong940607/humanseg --upgrade
+pip install git+https://github.com/liruilong940607/streamer_pytorch --upgrade
 
 ```
 
