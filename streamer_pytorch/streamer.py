@@ -43,10 +43,15 @@ def get_affine_matrix(center, translate, scale):
 
 
 class BaseStreamer():
-    def __init__(self, width=512, height=512, pad=True, **kwargs):
+    def __init__(self, 
+                 width=512, height=512, pad=True, 
+                 mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5),
+                 **kwargs):
         self.width = width
         self.height = height
         self.pad = pad
+        self.mean = np.array(mean)
+        self.std = np.array(std)
         
         self.loader = self.create_loader()
 
@@ -62,7 +67,7 @@ class BaseStreamer():
             image, M[0:2, :], (self.width, self.height), flags=cv2.INTER_CUBIC)
                 
         input = np.float32(image)
-        input = (input / 255.0 - 0.5) / 0.5 # TO [-1.0, 1.0]
+        input = (input / 255.0 - self.mean) / self.std # TO [-1.0, 1.0]
         input = input.transpose(2, 0, 1) # TO [3 x H x W]
         return torch.from_numpy(input).float()
     
@@ -71,8 +76,8 @@ class BaseStreamer():
         
 
 class CaptureStreamer(BaseStreamer):
-    def __init__(self, id=0, width=512, height=512, pad=True):
-        super().__init__(width, height, pad)
+    def __init__(self, id=0, width=512, height=512, pad=True, **kwargs):
+        super().__init__(width, height, pad, **kwargs)
         self.capture = cv2.VideoCapture(id)
     
     def create_loader(self):
@@ -89,8 +94,8 @@ class CaptureStreamer(BaseStreamer):
 
 
 class VideoListStreamer(BaseStreamer):
-    def __init__(self, files, width=512, height=512, pad=True):
-        super().__init__(width, height, pad)
+    def __init__(self, files, width=512, height=512, pad=True, **kwargs):
+        super().__init__(width, height, pad, **kwargs)
         self.files = files
         self.captures = [imageio.get_reader(f) for f in files]
         self.nframes = sum([int(cap._meta["fps"] * cap._meta["duration"]) \
@@ -110,8 +115,8 @@ class VideoListStreamer(BaseStreamer):
 
 
 class ImageListStreamer(BaseStreamer):
-    def __init__(self, files, width=512, height=512, pad=True):
-        super().__init__(width, height, pad)
+    def __init__(self, files, width=512, height=512, pad=True, **kwargs):
+        super().__init__(width, height, pad, **kwargs)
         self.files = files
     
     def create_loader(self):
