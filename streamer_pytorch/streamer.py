@@ -43,6 +43,8 @@ def get_affine_matrix(center, translate, scale):
 
 
 class BaseStreamer():
+    """This streamer will return images at 512x512 size.
+    """
     def __init__(self, 
                  width=512, height=512, pad=True, 
                  mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5),
@@ -76,6 +78,8 @@ class BaseStreamer():
         
 
 class CaptureStreamer(BaseStreamer):
+    """This streamer takes webcam as input.
+    """
     def __init__(self, id=0, width=512, height=512, pad=True, **kwargs):
         super().__init__(width, height, pad, **kwargs)
         self.capture = cv2.VideoCapture(id)
@@ -94,6 +98,8 @@ class CaptureStreamer(BaseStreamer):
 
 
 class VideoListStreamer(BaseStreamer):
+    """This streamer takes a list of video files as input.
+    """
     def __init__(self, files, width=512, height=512, pad=True, **kwargs):
         super().__init__(width, height, pad, **kwargs)
         self.files = files
@@ -115,6 +121,8 @@ class VideoListStreamer(BaseStreamer):
 
 
 class ImageListStreamer(BaseStreamer):
+    """This streamer takes a list of image files as input.
+    """
     def __init__(self, files, width=512, height=512, pad=True, **kwargs):
         super().__init__(width, height, pad, **kwargs)
         self.files = files
@@ -127,55 +135,6 @@ class ImageListStreamer(BaseStreamer):
 
     def __len__(self):
         return len(self.files)
-
-
-if __name__ == "__main__":
-    import tqdm
-    import argparse
-
-    parser = argparse.ArgumentParser(description='.')
-    parser.add_argument(
-        '--camera', action="store_true")
-    parser.add_argument(
-        '--images', default="", nargs="*")
-    parser.add_argument(
-        '--videos', default="", nargs="*")
-    parser.add_argument(
-        '--loop', action="store_true")
-    args = parser.parse_args()
-
-    def visulization(data):
-        window = data[0].numpy()
-        window = window.transpose(1, 2, 0)
-        window = (window * 0.5 + 0.5) * 255.0
-        window = np.uint8(window)
-        window = cv2.cvtColor(window, cv2.COLOR_BGR2RGB) 
-        window = cv2.resize(window, (0, 0), fx=2, fy=2)
-
-        cv2.imshow('window', window)
-        cv2.waitKey(1)
-
-    if args.camera:
-        data_stream = CaptureStreamer()
-    elif len(args.videos) > 0:
-        data_stream = VideoListStreamer(args.videos * (100 if args.loop else 1))
-    elif len(args.images) > 0:
-        data_stream = ImageListStreamer(args.images * (100 if args.loop else 1))
-
-    loader = torch.utils.data.DataLoader(
-        data_stream, 
-        batch_size=1, 
-        num_workers=1, 
-        pin_memory=False,
-    )
-
-    try:
-        for data in tqdm.tqdm(loader):
-            visulization(data)
-            pass
-    except Exception as e:
-        print (e)
-        del data_stream
 
 
 
