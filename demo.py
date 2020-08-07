@@ -13,7 +13,7 @@ parser.add_argument(
 parser.add_argument(
     '--images', default="", nargs="*", help="paths of image.")
 parser.add_argument(
-    '--image_folder', default="", help="path of image folder.")
+    '--image_folder', default=None, help="path of image folder.")
 parser.add_argument(
     '--videos', default="", nargs="*", help="paths of video.")
 parser.add_argument(
