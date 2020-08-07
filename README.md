@@ -10,7 +10,7 @@ pip install git+https://github.com/Project-Splinter/streamer_pytorch --upgrade
 # via git clone
 git clone https://github.com/Project-Splinter/streamer_pytorch
 cd streamer_pytorch
-python setup.py --develop
+python setup.py develop
 ```
 
 ## Usage
